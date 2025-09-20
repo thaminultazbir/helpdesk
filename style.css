@@ -1,0 +1,12 @@
+
+body{font-family:Arial,Helvetica,sans-serif;background:#f4f6f8;padding:20px}
+.card{max-width:600px;margin:30px auto;background:white;padding:20px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.err{color:#b00020}
+.topbar{display:flex;justify-content:space-between;align-items:center}
+.nav{margin-top:10px}
+.nav a{margin-right:10px}
+.ticket{border:1px solid #eee;padding:10px;border-radius:6px;margin-bottom:10px}
+label{display:block;margin-top:8px}
+input,textarea,select{width:100%;padding:8px;margin-top:4px;border:1px solid #ddd;border-radius:4px}
+button{padding:10px 14px;border:none;background:#0b6efd;color:white;border-radius:6px;margin-top:10px;cursor:pointer}
+small{color:#666}
