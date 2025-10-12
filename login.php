@@ -10,8 +10,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $u = $stmt->fetch();
     if($u && password_verify($pass, $u['password'])){
         $_SESSION['user'] = $u;
-        if($u['role']==='admin') header('Location: admin_dashboard.php');
-        else header('Location: user_dashboard.php');
+        if($u['role']==='admin') header('Location: ./admin/index.php');
+        else header('Location: ./client/user_dashboard.php');
         exit;
     } else $err = 'Invalid credentials';
 }

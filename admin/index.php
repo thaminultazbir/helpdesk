@@ -1,3 +1,15 @@
+<?php
+  require '../db.php';
+  require '../functions.php';
+  check_auth();
+  if ($_SESSION['user']['role'] !== 'admin') {
+      echo "Access Denied.";
+      exit; // Prevent further execution
+  }
+  $sql = "SELECT name, phone, employee_id FROM support_staff ORDER BY created_at DESC";
+  $stmt = $pdo->query($sql);
+?>
+
 <?php 
 include("./includes/header.php"); 
 include("./includes/sidenav.php"); 
@@ -169,63 +181,37 @@ include("./includes/sidenav.php");
                 <!-- ========USER======== -->
                  <div class="recentUser">
                     <div class="cardHeader">
-                        <h2>Recent User</h2>
+                        <h2>Staff</h2>
                         <a href="" class="btn">view All</a>
                     </div>
                     <table>
-                        <tr>
+                        <?php
+                            if($stmt->rowCount() > 0){
+                                while($row = $stmt->fetch()){
+                                    echo '<tr>';
+                                    echo '<td width="60px">';
+                                    // echo '<div class="imgbx"><img src="./assets/imgs/' . $row['image'] . '" alt=""></div>';
+                                    echo '<div class="imgbx"><img src="./assets/imgs/customer2.jpg" alt=""></div>';
+                                    echo '</td>';
+                                    echo '<td>';
+                                    echo '<h4>' . $row['name'] . '</h4><span>' . $row['phone'] . '</span>';
+                                    echo '</td>';
+                                    echo '</tr>';
+                                }
+                            }else{
+                                echo "No results found.";
+                            }
+                        ?>
+                        <!-- <tr>
                             <td width="60px">
                                 <div class="imgbx"><img src="./assets/imgs/customer2.jpg" alt=""></div>
                             </td>
                             <td>
                                 <h4>David</h4><span>Italy</span>
                             </td>
-                        </tr>
+                        </tr> -->
 
-                        <tr>
-                            <td width="60px">
-                                <div class="imgbx"><img src="./assets/imgs/customer2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4>David</h4><span>Italy</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgbx"><img src="./assets/imgs/customer2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4>David</h4><span>Italy</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgbx"><img src="./assets/imgs/customer2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4>David</h4><span>Italy</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgbx"><img src="./assets/imgs/customer2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4>David</h4><span>Italy</span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <div class="imgbx"><img src="./assets/imgs/customer2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4>David</h4><span>Italy</span>
-                            </td>
-                        </tr>
+                        
                     </table>
                  </div>
              </div>

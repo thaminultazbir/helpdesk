@@ -455,6 +455,39 @@ body{
 }
 
 
+/* ========> ADD STAFF FORM <================= */
+.staff-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 90vw;
+    height: 90vh;
+    row-gap: 15px;
+}
+.nice-form-group{
+    display: flex;
+    row-gap: 5px;
+    flex-direction: column;
+}
+.staff-form .nice-form-group input{
+    /* width: 50px; */
+    box-sizing: border-box;
+    margin: 5px 0;
+    padding: 10px;
+}
+.staff-form button{
+    padding: 1rem;
+    background: var(--blue);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+.staff-form button:hover{
+    color: var(--blue);
+    background: white;
+}
 
 
 
