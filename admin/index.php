@@ -6,8 +6,9 @@
       echo "Access Denied.";
       exit; // Prevent further execution
   }
-  $sql = "SELECT name, phone, employee_id FROM support_staff ORDER BY created_at DESC";
-  $stmt = $pdo->query($sql);
+  $support_staff = $pdo->query("SELECT name, phone, employee_id FROM support_staff ORDER BY created_at DESC");
+  $tickets = $pdo->query("SELECT t.*, u.name as user_name FROM tickets t JOIN users u ON u.id=t.user_id ORDER BY t.created_at DESC")->fetchAll();
+  $users = $pdo->query("SELECT id,name,email,role FROM users ORDER BY id DESC")->fetchAll();
 ?>
 
 <?php 
@@ -69,7 +70,7 @@ include("./includes/sidenav.php");
              <div class="details">
                 <div class="recentOrders">
                     <div class="cardHeader">
-                        <h2>Recent Order</h2>
+                        <h2>Recent Tickets</h2>
                         <a href="" class="btn">view All</a>
                     </div>
 
@@ -85,14 +86,33 @@ include("./includes/sidenav.php");
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <?php foreach($tickets as $t): ?>
+                                <tr>
+                                    <td><?=h($t['id'])?></td>
+                                    <td><?=h($t['category'])?></td>
+                                    <td><?= date('d M y h:i A', strtotime($t['created_at'])) ?></td>
+                                    <td>Toru Neer</td>
+                                    <td><span class="status <?= h($t['status']) == 'On Process' ? 'inprocess' : (h($t['status']) == 'pending' ? 'pending' : 'delivered') ?>"><?=h($t['status'])?></span></td>
+                                    <td><a href="view_ticket.php?id=<?= $t['id'] ?>"><ion-icon name="return-down-back-outline"></ion-icon></a></td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <!-- <tr>
                                 <td>1</td>  
                                 <td>Parking Problem</td>  
                                 <td>19 Sep 25</td>
                                 <td>Toru Neer</td>
                                 <td><span class="status inprocess">In Process</span></td> 
                                 <td><a href=""><ion-icon name="return-down-back-outline"></ion-icon></a></td>
-                                <!-- <td><a href="">action</a></td>  -->
+                                <td><a href="">action</a></td> 
+                            </tr> -->
+                            <!-- <tr>
+                                <td>1</td>  
+                                <td>Parking Problem</td>  
+                                <td>19 Sep 25</td>
+                                <td>Toru Neer</td>
+                                <td><span class="status inprocess">In Process</span></td> 
+                                <td><a href=""><ion-icon name="return-down-back-outline"></ion-icon></a></td>
+                                <td><a href="">action</a></td> 
                             </tr>
                             <tr>
                                 <td>1</td>  
@@ -101,17 +121,8 @@ include("./includes/sidenav.php");
                                 <td>Toru Neer</td>
                                 <td><span class="status inprocess">In Process</span></td> 
                                 <td><a href=""><ion-icon name="return-down-back-outline"></ion-icon></a></td>
-                                <!-- <td><a href="">action</a></td>  -->
-                            </tr>
-                            <tr>
-                                <td>1</td>  
-                                <td>Parking Problem</td>  
-                                <td>19 Sep 25</td>
-                                <td>Toru Neer</td>
-                                <td><span class="status inprocess">In Process</span></td> 
-                                <td><a href=""><ion-icon name="return-down-back-outline"></ion-icon></a></td>
-                                <!-- <td><a href="">action</a></td>  -->
-                            </tr>
+                                <td><a href="">action</a></td> 
+                            </tr> -->
 
                             <!-- <tr>
                                 <td>Star Refrigarator</td>  
@@ -186,8 +197,8 @@ include("./includes/sidenav.php");
                     </div>
                     <table>
                         <?php
-                            if($stmt->rowCount() > 0){
-                                while($row = $stmt->fetch()){
+                            if($support_staff->rowCount() > 0){
+                                while($row = $support_staff->fetch()){
                                     echo '<tr>';
                                     echo '<td width="60px">';
                                     // echo '<div class="imgbx"><img src="./assets/imgs/' . $row['image'] . '" alt=""></div>';

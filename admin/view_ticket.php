@@ -1,6 +1,6 @@
 <?php
-  require 'db.php';
-  require 'functions.php';
+  require '../db.php';
+  require '../functions.php';
   check_auth();
   $user = $_SESSION['user'];
   $id = $_GET['id'] ?? 0;
