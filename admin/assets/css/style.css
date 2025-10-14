@@ -268,7 +268,7 @@ body{
 .details .recentOrders{
     position: relative;
     display: grid;
-    max-height: 550px;
+    max-height: 280px;
     background: var(--white);
     padding: 20px;
     box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
@@ -488,6 +488,22 @@ body{
     color: var(--blue);
     background: white;
 }
+.ticket_details_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    width: 100%;
+    /* background: #8de02c; */
+}
+.ticket_details{
+    width: 60%;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.08);
+    padding: 10px;
+    box-shadow: 10px 10px 10px 1px rgba(0, 0, 0, 0.1);
+}
+
 
 
 

@@ -77,7 +77,7 @@ include("./includes/sidenav.php");
                     <table>
                         <thead>
                             <tr>
-                                <td>Issue Id</td>
+                                <td>Id</td>
                                 <td>Category</td>
                                 <td>Create At</td>  
                                 <td>Project</td>  
@@ -90,7 +90,7 @@ include("./includes/sidenav.php");
                                 <tr>
                                     <td><?=h($t['id'])?></td>
                                     <td><?=h($t['category'])?></td>
-                                    <td><?= date('d M y h:i A', strtotime($t['created_at'])) ?></td>
+                                    <td><?= date('d M y', strtotime($t['created_at'])) ?></td>
                                     <td>Toru Neer</td>
                                     <td><span class="status <?= h($t['status']) == 'On Process' ? 'inprocess' : (h($t['status']) == 'pending' ? 'pending' : 'delivered') ?>"><?=h($t['status'])?></span></td>
                                     <td><a href="view_ticket.php?id=<?= $t['id'] ?>"><ion-icon name="return-down-back-outline"></ion-icon></a></td>
