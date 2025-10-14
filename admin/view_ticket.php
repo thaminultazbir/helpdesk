@@ -34,7 +34,10 @@ include("./includes/sidenav.php");
   <?php include("./includes/topbar.php");?>
   <div class="ticket_details_container">
     <div class="ticket_details">
-      I love you
+      <div class="ticket_heading">
+        <h4>Ticket <span>#1 - </span><span>Water Leakage</span></h5>
+        <div class="status">Pending</div>
+      </div>
     </div>
   </div>
 </div>
