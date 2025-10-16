@@ -548,6 +548,144 @@ body{
     margin-right: 10px;
 }
 
+.issue_details{
+    margin-bottom: 20px;
+}
+
+.issue_img{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.issue_img img{
+    width: 180px;
+    height: 180px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.issue_img img:hover{
+    transform: scale(1.1);
+}
+
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
+    overflow: auto;
+    padding-top: 60px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    animation: scaleUp 0.4s ease-out;
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.close:hover,
+.close:focus {
+    color: #999;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Animation for opening the modal */
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Animation for scaling up the image */
+@keyframes scaleUp {
+    0% {
+        transform: scale(0.5);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Animation for closing the modal */
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.modal.fade-out {
+    animation: fadeOut 0.5s ease-out; /* Apply fade-out animation */
+}
+
+
+.project_details .name{
+    margin-right: 30px;
+}
+
+.ticket_action{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#select_staff{
+    margin-left: 10px;
+    padding: 5px;
+    border-radius: 5px;
+}
+#status{
+    margin-left: 10px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.ticket_action .btn{
+    margin-left: 10px;
+    padding: 6px;
+    cursor: pointer;
+    background: #2a2185;
+    outline: none;
+    border: none;
+    color: #f5f5f5;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+.ticket_action .btn:hover{
+    background: #483eb8;
+}
+
 
 
 @media(max-width: 991px){

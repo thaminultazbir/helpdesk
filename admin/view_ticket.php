@@ -46,14 +46,62 @@ include("./includes/sidenav.php");
           <div><strong class="title">Floor: </strong><p>4th</p></div>
           <div><strong class="title">Appartment:</strong><p>B4</p></div>
         </div>
-        <div><strong>Issue Details: </strong><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, accusantium. Voluptate saepe exercitationem, vitae unde illum modi voluptatum reiciendis impedit commodi. In mollitia alias qui non voluptas quibusdam veritatis illum.</p></div>
-        <div class="project_details">
-          <div><strong class="title">Contact Client: </strong><p>+880123456789</p></div>
+        <div class="issue_details"><strong>Issue Details: </strong><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, accusantium. Voluptate saepe exercitationem, vitae unde illum modi voluptatum reiciendis impedit commodi. In mollitia alias qui non voluptas quibusdam veritatis illum.</p></div>
+        
+        <div class="issue_img">
+          <img src="./assets/imgs/customer.jpg" class="image">
+          <img src="./assets/imgs/customer2.jpg" class="image">
+          <img src="./assets/imgs/customer2.jpg" class="image">
+          <img src="./assets/imgs/customer2.jpg" class="image">
+          <img src="./assets/imgs/customer2.jpg" class="image">
         </div>
-        <div class="project_details"><strong>Assigned Staff: </strong><p>Sazzad</p> <strong>ID: </strong><p>12345</p></div>
-        <div class="project_details"><strong>Change Staff: </strong><p>DropDown</p><button>Update</button></div>
-      </div>
-    </div>
+
+        <div id="imageModal" class="modal">
+          <span class="close">&times;</span>
+          <img class="modal-content" id="modalImage">
+        </div>
+        
+        <div class="project_details">
+          <div>
+            <strong class="title">Client Name: </strong><p>Md. Shawn Hakim</p>
+          </div>
+          <div>
+            <strong class="title">Client Contact: </strong><p>+880123456789</p>
+          </div>
+        </div>
+        <div class="project_details">
+          <div>
+            <strong class="title">Assigned Staff: </strong><p class="name">Sazzad</p><strong class="title">ID: </strong><p>12345</p>
+          </div>
+        </div>
+        <!-- <div class="project_details">
+          <div><strong class="title">Change Staff: </strong><p>DropDown</p><button>Update</button></div>
+        </div>
+        <div>
+          <h4>Change Ticket Status: </h4><p>Dropdown</p>
+        </div> -->
+        <div class="ticket_action">
+          <div class="change_staff">
+            <strong>Change Staff: </strong>
+            <select name="" id="select_staff">
+              <option value="" disabled selected>Update Staff</option>
+              <option value="">Ahad</option>
+              <option value="">Sazzad</option>
+              <option value="">Asif kasdjklgklsd</option>
+              <option value="">Tazbir</option>
+            </select>
+            <button class="btn">Update</button>
+          </div>
+          <div class="ticket_status">
+            <strong>Change Ticket Status:</strong>
+            <select name="" id="status">
+              <option value="">Pending</option>
+              <option value="">On Process</option>
+              <option value="">Solved</option>
+            </select>
+            <button class="btn">Update</button>
+          </div>
+        </div>
   </div>
 </div>
 </div>
