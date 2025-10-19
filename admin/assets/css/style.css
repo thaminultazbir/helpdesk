@@ -497,7 +497,7 @@ body{
     /* background: #8de02c; */
 }
 .ticket_details{
-    width: 60%;
+    width: 80%;
     border-radius: 10px;
     background: rgba(0, 0, 0, 0.08);
     padding: 10px;
@@ -563,8 +563,8 @@ body{
     margin-bottom: 20px;
 }
 .issue_img img{
-    width: 180px;
-    height: 180px;
+    width: 130px;
+    height: 130px;
     border-radius: 10px;
     cursor: pointer;
     transition: transform 0.3s ease;
@@ -711,6 +711,23 @@ body{
 .comment_action a:hover{
     background: rgb(63, 95, 77);
 }
+
+
+/* CSS for the success notification */
+#successNotification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #28a745; /* Green background */
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  display: none; /* Hidden by default */
+  z-index: 9999; /* Ensure it appears above other content */
+}
+
+
 
 
 @media(max-width: 991px){

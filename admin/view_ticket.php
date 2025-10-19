@@ -5,8 +5,10 @@
   $user = $_SESSION['user'];
   $id = $_GET['id'] ?? 0;
 
+  // session_start();
+
   // Fetch the ticket and the assigned staff (only one staff per ticket)
-  $stmt = $pdo->prepare("SELECT t.*, u.name as user_name, s.name as assigned_name, s.id, s.employee_id as assigned_staff_id, cp.name as client_name, cp.phone as client_contact 
+  $stmt = $pdo->prepare("SELECT t.*, u.name as user_name, s.name as assigned_name, s.employee_id as assigned_staff_employee_id, s.id as assigned_staff_id, cp.name as client_name, cp.phone as client_contact 
                        FROM tickets t
                        LEFT JOIN users u ON u.id=t.user_id 
                        LEFT JOIN ticket_assignments ta ON ta.ticket_id = t.id
@@ -15,23 +17,45 @@
                        WHERE t.id = ? LIMIT 1");
   $stmt->execute([$id]);
   $t = $stmt->fetch();
+  $successMessage = "";
 
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = $_POST['action'] ?? '';
 
-  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['staff']) && !empty($_POST['staff'])) {
-        $selectedStaffId = $_POST['staff'];
-        $ticketId = $id;  // Assuming ticket ID is available
+    if ($action === 'update_staff') {
+        $selectedStaffId = $_POST['staff'] ?? '';
+        if ($selectedStaffId !== '') {
+            $update = $pdo->prepare("UPDATE ticket_assignments SET staff_id = ? WHERE ticket_id = ?");
+            $update->execute([$selectedStaffId, $id]);
 
-        // Update the assigned_to column in tickets table
-        $updateQuery = $pdo->prepare("UPDATE tickets SET assigned_to = ? WHERE id = ?");
-        $updateQuery->execute([$selectedStaffId, $ticketId]);
-
-        // Optionally, show a success message or redirect
-        echo "Assigned staff updated successfully!";
-    } else {
-        echo "Please select a staff member to assign.";
+            $_SESSION['success_message'] = $update->rowCount() > 0
+              ? "Assigned staff updated successfully!"
+              : "No change — same staff as before.";
+        } else {
+            $_SESSION['error_message'] = "Please select a staff member.";
+        }
+        header("Location: view_ticket.php?id=".$id);
+        exit;
     }
-  }
+
+    if ($action === 'update_status') {
+        $newStatus = $_POST['status'] ?? '';
+        if (in_array($newStatus, ['Pending','On Process','Solved'], true)) {
+            $update = $pdo->prepare("UPDATE tickets SET status = ? WHERE id = ?");
+            $update->execute([$newStatus, $id]);
+
+            $_SESSION['success_message'] = $update->rowCount() > 0
+              ? "Ticket status updated successfully!"
+              : "No change — already $newStatus.";
+        } else {
+            $_SESSION['error_message'] = "Invalid status value.";
+        }
+        header("Location: view_ticket.php?id=".$id);
+        exit;
+    }
+}
+  
+
 
   if (!$t) { 
     echo "Ticket not found"; 
@@ -50,6 +74,22 @@ include("./includes/sidenav.php");
 ?>
 <div class="main">
   <?php include("./includes/topbar.php");?>
+
+
+  <!-- Success Message Display -->
+  <?php if (isset($_SESSION['success_message'])) { ?>
+    <div id="successNotification"><?php echo $_SESSION['success_message']; ?></div>
+    <?php unset($_SESSION['success_message']); // Clear the session message ?>
+  <?php } ?>
+
+  <!-- Error Message Display (if any) -->
+  <?php if (isset($_SESSION['error_message'])) { ?>
+    <div id="errorNotification"><?php echo $_SESSION['error_message']; ?></div>
+    <?php unset($_SESSION['error_message']); // Clear the session error message ?>
+  <?php } ?>
+  
+
+
   <div class="ticket_details_container">
     <div class="ticket_details">
       <div class="ticket_heading">
@@ -71,9 +111,6 @@ include("./includes/sidenav.php");
         <div class="issue_img">
           <img src="./assets/imgs/customer.jpg" class="image">
           <img src="./assets/imgs/customer2.jpg" class="image">
-          <img src="./assets/imgs/customer2.jpg" class="image">
-          <img src="./assets/imgs/customer2.jpg" class="image">
-          <img src="./assets/imgs/customer2.jpg" class="image">
         </div>
 
         <div id="imageModal" class="modal">
@@ -91,7 +128,7 @@ include("./includes/sidenav.php");
         </div>
         <div class="project_details">
           <div>
-            <strong class="title">Assigned Staff: </strong><p class="name"><?php echo $t['assigned_name']; ?></p><strong class="title">ID: </strong><p><?php echo $t['assigned_staff_id']; ?></p>
+            <strong class="title">Assigned Staff: </strong><p class="name"><?php echo $t['assigned_name']; ?></p><strong class="title">ID: </strong><p><?php echo $t['assigned_staff_employee_id']; ?></p>
           </div>
         </div>
         <!-- <div class="project_details">
@@ -101,37 +138,41 @@ include("./includes/sidenav.php");
           <h4>Change Ticket Status: </h4><p>Dropdown</p>
         </div> -->
         <div class="ticket_action">
-          <form method="POST" action="view_ticket.php?id=<?= $t['id'] ?>">
+          <!-- Update Staff -->
+          <form method="POST" action="view_ticket.php?id=<?= (int)$t['id'] ?>">
+            <input type="hidden" name="action" value="update_staff">
             <div class="change_staff">
               <strong>Change Staff: </strong>
-              <select name="staff" id="select_staff">
+              <select name="staff" id="select_staff" required>
                 <option value="" disabled selected>Update Staff</option>
-                <!-- <option value="">Ahad</option>
-                <option value="">Sazzad</option>
-                <option value="">Asif kasdjklgklsd</option>
-                <option value="">Tazbir</option> -->
                 <?php
-                $staffQuery = $pdo->prepare("SELECT id, name FROM support_staff");
+                $staffQuery = $pdo->prepare("SELECT id, name FROM support_staff ORDER BY name");
                 $staffQuery->execute();
-                $staffList = $staffQuery->fetchAll();
-                foreach($staffList as $staff){
+                foreach ($staffQuery->fetchAll() as $staff) {
                   echo "<option value='{$staff['id']}'>{$staff['name']}</option>";
                 }
                 ?>
               </select>
-              <button class="btn">Update</button>
+              <button class="btn" type="submit">Update</button>
+            </div>
+          </form>  
+
+
+
+          <!-- Update Status -->
+          <form method="POST" action="view_ticket.php?id=<?= (int)$t['id'] ?>">
+            <input type="hidden" name="action" value="update_status">
+            <div class="ticket_status">
+              <strong>Change Ticket Status:</strong>
+              <select name="status" id="status" required>
+                <option value="" disabled>Update Status</option>
+                <option value="Pending"    <?= $t['status']==='Pending' ? 'selected' : '' ?>>Pending</option>
+                <option value="On Process" <?= $t['status']==='On Process' ? 'selected' : '' ?>>On Process</option>
+                <option value="Solved"     <?= $t['status']==='Solved' ? 'selected' : '' ?>>Solved</option>
+              </select>
+              <button class="btn" type="submit">Update</button>
             </div>
           </form>
-          <div class="ticket_status">
-            <strong>Change Ticket Status:</strong>
-            <select name="" id="status">
-              <option value="" disabled selected>Update Status</option>
-              <option value="">Pending</option>
-              <option value="">On Process</option>
-              <option value="">Solved</option>
-            </select>
-            <button class="btn">Update</button>
-          </div>
         </div>
         <div class="comment_action">
           <a href="./comment.php">Write details about the ticket</a>
@@ -140,3 +181,13 @@ include("./includes/sidenav.php");
 </div>
 </div>
 <?php include("./includes/footer.php"); ?>
+
+
+<script>
+  // Show success notification and reload the page after a delay
+  <?php if (isset($_SESSION['success_message'])) { ?>
+    setTimeout(function() {
+      location.reload(); // Reload the page after 1 second
+    }, 1000);
+  <?php } ?>
+</script>
