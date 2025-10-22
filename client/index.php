@@ -18,7 +18,8 @@ dolore magna aliqua.</p>
     </div>
 
     <!-- Section 2: Personal Details -->
-    <div class="personal-details">
+     <form action="">
+        <div class="personal-details">
         <div class="scroll-logo"><img src="./img/arrow.png" alt=""></div>
         <h4>Your Personal Details</h4>
         <div class="input-area">
@@ -44,11 +45,11 @@ dolore magna aliqua.</p>
             <label for="name">Appartment</label>
             <input type="text">
         </div>
-    </div>
+        </div>
 
 
 
-    <div class="report-issue">
+        <div class="report-issue">
         <div class="heading">
             <h4>Report an Issue</h4>
             <img src="./img/error.png" alt="">
@@ -79,7 +80,8 @@ dolore magna aliqua.</p>
             </div>
             <button class="btn">Submit</button>
         </div>
-    </div>
+        </div>
+    </form>
 
   </div>
 

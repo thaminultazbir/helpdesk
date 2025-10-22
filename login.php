@@ -11,7 +11,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if($u && password_verify($pass, $u['password'])){
         $_SESSION['user'] = $u;
         if($u['role']==='admin') header('Location: ./admin/index.php');
-        else header('Location: ./client/user_dashboard.php');
+        else header('Location: ./client/index.php');
         exit;
     } else $err = 'Invalid credentials';
 }
