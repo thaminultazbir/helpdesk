@@ -1,7 +1,7 @@
 <?php
-  require '../db.php';
-  require '../functions.php';
-  check_auth();
+require '../db.php';
+require '../functions.php';
+check_auth();
 
 $user = $_SESSION['user'];
 $err = '';

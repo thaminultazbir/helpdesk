@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile UI</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Section 1: Messages -->
+    <div class="messages">
+      <p class="query">Welcome to digital query management system</p>
+      <img src="./img/logo.png" alt="">
+      <p class="msg"> Lorem ipsum dolor sit amet, consectetur adipiscing 
+elit, sed do eiusmod tempor incididunt ut labore et 
+dolore magna aliqua.</p>
+    </div>
+
+    <!-- Section 2: Personal Details -->
+    <div class="personal-details">
+        <div class="scroll-logo"><img src="./img/arrow.png" alt=""></div>
+        <h4>Your Personal Details</h4>
+        <div class="input-area">
+            <label for="name">Name</label>
+            <input type="text">
+        </div>
+
+        <div class="input-area">
+            <label for="name">Contact</label>
+            <input type="number">
+        </div>
+
+        <div class="input-area">
+            <label for="name">Building Name</label>
+            <input type="text">
+        </div>
+        <div class="input-area">
+            <label for="name">Floor</label>
+            <input type="text">
+        </div>
+
+        <div class="input-area">
+            <label for="name">Appartment</label>
+            <input type="text">
+        </div>
+    </div>
+
+
+
+    <div class="report-issue">
+        <div class="heading">
+            <h4>Report an Issue</h4>
+            <img src="./img/error.png" alt="">
+        </div>
+        <div class="input-area">
+            <label for="Category">Category</label>
+            <input type="text">
+        </div>
+
+        <div class="textarea">
+            <label for="details">Details</label>
+            <textarea name="details" id=""></textarea>
+        </div>
+
+
+
+        <div class="file-input-container">
+            <label for="file-upload" class="custom-file-upload">
+                Upload Images
+            </label>
+            <input type="file" id="file-upload" name="image" accept="image/*">
+            <div class="image_file_name">
+                <span class="upload_button">+</span>
+                <div class="upload_box">
+                    <p>image1.jpg, img2.png, img4.heiv,img4.heiv,img4.heiv</p>
+                    <span class="delete_button">X</span>
+                </div>
+            </div>
+            <button class="btn">Submit</button>
+        </div>
+    </div>
+
+  </div>
+
+  <script src="./main.js"></script>
+</body>
+</html>
