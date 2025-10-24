@@ -1,3 +1,8 @@
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,68 +23,68 @@ dolore magna aliqua.</p>
     </div>
 
     <!-- Section 2: Personal Details -->
-     <form action="">
+     <form method="POST" action="submit_ticket.php" enctype="multipart/form-data">
         <div class="personal-details">
         <div class="scroll-logo"><img src="./img/arrow.png" alt=""></div>
         <h4>Your Personal Details</h4>
         <div class="input-area">
             <label for="name">Name</label>
-            <input type="text">
+            <input type="text" name="name">
         </div>
 
         <div class="input-area">
             <label for="name">Contact</label>
-            <input type="number">
+            <input type="number" name="contact">
         </div>
 
         <div class="input-area">
             <label for="name">Building Name</label>
-            <input type="text">
+            <input type="text" name="buildingName">
         </div>
         <div class="input-area">
             <label for="name">Floor</label>
-            <input type="text">
+            <input type="text" name="floor">
         </div>
 
         <div class="input-area">
             <label for="name">Appartment</label>
-            <input type="text">
+            <input type="text" name="appartment">
         </div>
         </div>
 
 
 
         <div class="report-issue">
-        <div class="heading">
-            <h4>Report an Issue</h4>
-            <img src="./img/error.png" alt="">
-        </div>
-        <div class="input-area">
-            <label for="Category">Category</label>
-            <input type="text">
-        </div>
-
-        <div class="textarea">
-            <label for="details">Details</label>
-            <textarea name="details" id=""></textarea>
-        </div>
-
-
-
-        <div class="file-input-container">
-            <label for="file-upload" class="custom-file-upload">
-                Upload Images
-            </label>
-            <input type="file" id="file-upload" name="image" accept="image/*">
-            <div class="image_file_name">
-                <span class="upload_button">+</span>
-                <div class="upload_box">
-                    <p>image1.jpg, img2.png, img4.heiv,img4.heiv,img4.heiv</p>
-                    <span class="delete_button">X</span>
-                </div>
+            <div class="heading">
+                <h4>Report an Issue</h4>
+                <img src="./img/error.png" alt="">
             </div>
-            <button class="btn">Submit</button>
-        </div>
+            <div class="input-area">
+                <label for="Category">Category</label>
+                <input type="text" name="category">
+            </div>
+
+            <div class="textarea">
+                <label for="details">Details</label>
+                <textarea name="details" id=""></textarea>
+            </div>
+
+
+
+            <div class="file-input-container">
+                <label for="file-upload" class="custom-file-upload">
+                    Upload Images
+                </label>
+                <input type="file" id="fileInput" name="image[]" accept="image/*" multiple>
+                <div class="image_file_name">
+                    <span class="upload_button">+</span>
+                    <div class="upload_box">
+                        <p id="fileNames">No file selected</p>
+                        <span class="delete_button">X</span>
+                    </div>
+                </div>
+                <button class="btn" type="submit">Submit</button>
+            </div>
         </div>
     </form>
 
