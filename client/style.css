@@ -17,24 +17,33 @@ body, html {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background: #044E76;
+    background: url('./img/bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     color: #fff;
 }
 .messages .query{
     max-width: 300px;
-    margin-top: 100px;
+    margin-top: 50px;
     text-align: center;
-    font-size: 25px;
+    font-size: 16px;
     font-weight: 500;
+}
+.messages .query span{
+  display: block;
+  margin-top: 16px;
+  font-size: 30px;
 }
 .messages img{
     width: 200px;
+    margin-bottom: 100px;
 }
-.messages .msg{
+/* .messages .msg{
     max-width: 300px;
     text-align: left;
     margin-bottom: 100px;
-}
+} */
 .personal-details{
     position: relative;
     background: #F0F1F1;

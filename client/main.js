@@ -115,3 +115,44 @@ document.querySelector('.delete_button').addEventListener('click', function() {
     // Clear the displayed file names
     document.getElementById('fileNames').textContent = 'No files selected';
 });
+
+
+
+// Show loader on form submit and hide it after form submission
+document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the default form submission
+
+    // Grab values from the fields to validate
+    var floor = document.querySelector('input[name="floor"]').value;
+    var imageField = document.querySelector('input[name="image"]').files.length;
+
+    // Check if optional fields are blank (either floor or image)
+    // Optional fields shouldn't stop the form submission
+    if (floor.trim() === "" || imageField === 0) {
+        console.log("One or both optional fields are blank.");
+    }
+
+    // Show the loader while processing
+    document.getElementById('loader').style.display = 'block';
+
+    // Prepare form data for submission
+    var formData = new FormData(this);
+
+    // Perform AJAX submission
+    fetch('submit_ticket.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        // Hide the loader after submission
+        document.getElementById('loader').style.display = 'none';
+
+        // After the form is submitted successfully, redirect to success.php
+        window.location.href = 'success.php';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('loader').innerHTML = "There was an error submitting your ticket.";
+    });
+});

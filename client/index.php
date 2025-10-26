@@ -10,16 +10,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mobile UI</title>
   <link rel="stylesheet" href="./style.css">
+  <style>
+    #loader {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px; /* You can adjust this */
+            height: 100px; /* Adjust the height */
+            background-image: url('./img/logo.png'); /* Your logo path */
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: scaleUpDown 2s ease-in-out infinite;
+            display: none; /* Initially hidden */
+        }
+  </style>
 </head>
 <body>
   <div class="container">
     <!-- Section 1: Messages -->
     <div class="messages">
-      <p class="query">Welcome to digital query management system</p>
+      <p class="query">Welcome to <br> <span>Rancon Facility
+ Support System</span></p>
       <img src="./img/logo.png" alt="">
-      <p class="msg"> Lorem ipsum dolor sit amet, consectetur adipiscing 
+      <!-- <p class="msg"> Lorem ipsum dolor sit amet, consectetur adipiscing 
 elit, sed do eiusmod tempor incididunt ut labore et 
-dolore magna aliqua.</p>
+dolore magna aliqua.</p> -->
     </div>
 
     <!-- Section 2: Personal Details -->
@@ -29,17 +45,16 @@ dolore magna aliqua.</p>
         <h4>Your Personal Details</h4>
         <div class="input-area">
             <label for="name">Name</label>
-            <input type="text" name="name">
+            <input type="text" name="name" required>
         </div>
 
         <div class="input-area">
             <label for="name">Contact</label>
-            <input type="number" name="contact">
+            <input type="number" name="contact" required>
         </div>
-
         <div class="input-area">
             <label for="name">Building Name</label>
-            <input type="text" name="buildingName">
+            <input type="text" name="buildingName" required>
         </div>
         <div class="input-area">
             <label for="name">Floor</label>
@@ -48,7 +63,7 @@ dolore magna aliqua.</p>
 
         <div class="input-area">
             <label for="name">Appartment</label>
-            <input type="text" name="appartment">
+            <input type="text" name="appartment" required>
         </div>
         </div>
 
@@ -61,12 +76,12 @@ dolore magna aliqua.</p>
             </div>
             <div class="input-area">
                 <label for="Category">Category</label>
-                <input type="text" name="category">
+                <input type="text" name="category" required>
             </div>
 
             <div class="textarea">
                 <label for="details">Details</label>
-                <textarea name="details" id=""></textarea>
+                <textarea name="details" id="" required></textarea>
             </div>
 
 
@@ -87,6 +102,7 @@ dolore magna aliqua.</p>
             </div>
         </div>
     </form>
+    <div id="loader"></div>
 
   </div>
 

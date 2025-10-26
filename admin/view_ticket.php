@@ -93,8 +93,8 @@ include("./includes/sidenav.php");
   <div class="ticket_details_container">
     <div class="ticket_details">
       <div class="ticket_heading">
-        <h4>Ticket <span>#<?php echo $t['id']; ?> - </span><span><?php echo $t['title']; ?></span></h4>
-        <div class="status <?php echo ($t['status'] == 'Pending') ? 'pending' : (($t['status'] == 'On Process') ? 'ongoing' : 'solved'); ?>">
+        <h4>Ticket <span>#<?php echo $t['id']; ?> - </span><span><?php echo $t['category']; ?></span></h4>
+        <div class="status <?php echo ($t['status'] == 'pending') ? 'pending' : (($t['status'] == 'On Process') ? 'ongoing' : 'solved'); ?>">
           <?php echo $t['status']; ?>
         </div>
       </div>
@@ -103,14 +103,33 @@ include("./includes/sidenav.php");
       <div class="ticket_body">
         <div class="project_details">
           <div><strong class="title">Project: </strong><p><?php echo $t['project']; ?></p></div>
-          <div><strong class="title">Floor: </strong><p><?php echo $t['floor']; ?></p></div>
+          <?php if (!empty($t['floor'])): ?>
+          <div>
+              <strong class="title">Floor: </strong>
+              <p><?php echo h($t['floor']); ?></p>
+          </div>
+          <?php endif; ?>
+
           <div><strong class="title">Appartment:</strong><p><?php echo $t['appartment']; ?></p></div>
         </div>
         <div class="issue_details"><strong>Issue Details: </strong><p><?php echo $t['description']; ?></p></div>
         
         <div class="issue_img">
-          <img src="./assets/imgs/customer.jpg" class="image">
-          <img src="./assets/imgs/customer2.jpg" class="image">
+          <!-- <img src="./assets/imgs/customer.jpg" class="image">
+          <img src="./assets/imgs/customer2.jpg" class="image"> -->
+          <?php
+          if(!empty($t['image'])){
+            $imagePaths = explode(',', $t['image']);
+            // Loop through each image path and display the image
+            foreach ($imagePaths as $imagePath) {
+              // Trim any extra spaces from the image path
+              $imagePath = trim($imagePath);
+              echo "<img src='../client/$imagePath' class='image'>";
+            }
+          } else {
+            echo "No images available.";
+          }
+          ?>
         </div>
 
         <div id="imageModal" class="modal">

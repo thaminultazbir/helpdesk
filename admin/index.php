@@ -7,8 +7,8 @@
       exit; // Prevent further execution
   }
   $support_staff = $pdo->query("SELECT name, phone, employee_id FROM support_staff ORDER BY created_at DESC");
-  $tickets = $pdo->query("SELECT t.*, u.name as user_name FROM tickets t JOIN users u ON u.id=t.user_id ORDER BY t.created_at DESC")->fetchAll();
-  $users = $pdo->query("SELECT id,name,email,role FROM users ORDER BY id DESC")->fetchAll();
+  $tickets = $pdo->query("SELECT * FROM tickets ORDER BY created_at DESC")->fetchAll();
+//   $users = $pdo->query("SELECT id,name,email,role FROM users ORDER BY id DESC")->fetchAll();
 ?>
 
 <?php 
@@ -91,100 +91,11 @@ include("./includes/sidenav.php");
                                     <td><?=h($t['id'])?></td>
                                     <td><?=h($t['category'])?></td>
                                     <td><?= date('d M y', strtotime($t['created_at'])) ?></td>
-                                    <td>Toru Neer</td>
+                                    <td><?=h($t['project'])?></td>
                                     <td><span class="status <?= h($t['status']) == 'On Process' ? 'inprocess' : (h($t['status']) == 'pending' ? 'pending' : 'delivered') ?>"><?=h($t['status'])?></span></td>
                                     <td><a href="view_ticket.php?id=<?= $t['id'] ?>"><ion-icon name="return-down-back-outline"></ion-icon></a></td>
                             </tr>
                             <?php endforeach; ?>
-                            <!-- <tr>
-                                <td>1</td>  
-                                <td>Parking Problem</td>  
-                                <td>19 Sep 25</td>
-                                <td>Toru Neer</td>
-                                <td><span class="status inprocess">In Process</span></td> 
-                                <td><a href=""><ion-icon name="return-down-back-outline"></ion-icon></a></td>
-                                <td><a href="">action</a></td> 
-                            </tr> -->
-                            <!-- <tr>
-                                <td>1</td>  
-                                <td>Parking Problem</td>  
-                                <td>19 Sep 25</td>
-                                <td>Toru Neer</td>
-                                <td><span class="status inprocess">In Process</span></td> 
-                                <td><a href=""><ion-icon name="return-down-back-outline"></ion-icon></a></td>
-                                <td><a href="">action</a></td> 
-                            </tr>
-                            <tr>
-                                <td>1</td>  
-                                <td>Parking Problem</td>  
-                                <td>19 Sep 25</td>
-                                <td>Toru Neer</td>
-                                <td><span class="status inprocess">In Process</span></td> 
-                                <td><a href=""><ion-icon name="return-down-back-outline"></ion-icon></a></td>
-                                <td><a href="">action</a></td> 
-                            </tr> -->
-
-                            <!-- <tr>
-                                <td>Star Refrigarator</td>  
-                                <td>$1200</td>  
-                                <td>Paid</td>  
-                                <td><span class="status pending">Pending</span></td>  
-                            </tr>
-
-                            <tr>
-                                <td>Star Refrigarator</td>  
-                                <td>$1200</td>  
-                                <td>Paid</td>  
-                                <td><span class="status inprocess">In Process</span></td>  
-                            </tr>
-
-                            <tr>
-                                <td>Dell laptop</td>  
-                                <td>$1200</td>  
-                                <td>Paid</td>  
-                                <td><span class="status delivered">Delived</span></td>  
-                            </tr>
-
-                            <tr>
-                                <td>Oven</td>  
-                                <td>$1700</td>  
-                                <td>Paid</td>  
-                                <td><span class="status pending">Pending</span></td>  
-                            </tr>
-                            <tr>
-                                <td>Star Refrigarator</td>  
-                                <td>$1200</td>  
-                                <td>Paid</td>  
-                                <td><span class="status delivered">Delived</span></td>  
-                            </tr>
-
-                            <tr>
-                                <td>Star Refrigarator</td>  
-                                <td>$1200</td>  
-                                <td>Paid</td>  
-                                <td><span class="status pending">Pending</span></td>  
-                            </tr>
-
-                            <tr>
-                                <td>Star Refrigarator</td>  
-                                <td>$1200</td>  
-                                <td>Paid</td>  
-                                <td><span class="status inprocess">In Process</span></td>  
-                            </tr>
-
-                            <tr>
-                                <td>Dell laptop</td>  
-                                <td>$1200</td>  
-                                <td>Paid</td>  
-                                <td><span class="status delivered">Delived</span></td>  
-                            </tr>
-
-                            <tr>
-                                <td>Oven</td>  
-                                <td>$1700</td>  
-                                <td>Paid</td>  
-                                <td><span class="status pending">Pending</span></td>  
-                            </tr> -->
                         </tbody>
                     </table>
                 </div>
@@ -213,16 +124,6 @@ include("./includes/sidenav.php");
                                 echo "No results found.";
                             }
                         ?>
-                        <!-- <tr>
-                            <td width="60px">
-                                <div class="imgbx"><img src="./assets/imgs/customer2.jpg" alt=""></div>
-                            </td>
-                            <td>
-                                <h4>David</h4><span>Italy</span>
-                            </td>
-                        </tr> -->
-
-                        
                     </table>
                  </div>
              </div>

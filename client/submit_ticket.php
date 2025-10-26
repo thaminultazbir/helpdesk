@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get the additional form data for project, appartment, and floor
     $project = $_POST['buildingName'];  // Get project
     $appartment = $_POST['appartment'];  // Get appartment
-    $floor = $_POST['floor'];  // Get floor
+    $floor = isset($_POST['floor']) ? $_POST['floor'] : '';  // Get floor
 
     // Step 1: Insert client details into client_profile table
     $sql_client = "INSERT INTO client_profile (name, phone) VALUES (:client_name, :client_contact)";
@@ -76,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Close the connection (optional with PDO)
     $stmt_ticket->closeCursor();
-
-    echo "Ticket submitted successfully!";
+    header('Location: ./success.php');
 }
 ?>
