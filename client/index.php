@@ -1,3 +1,18 @@
+<?php
+// Include database connection
+include('../db.php');
+
+// Fetch building names from the database
+$sql = "SELECT * FROM building_details";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$buildings = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch all building names
+
+// Close the connection (optional with PDO)
+$stmt->closeCursor();
+?>
+
+
 
 
 
@@ -33,9 +48,6 @@
       <p class="query">Welcome to <br> <span>Rancon Facility
  Support System</span></p>
       <img src="./img/logo.png" alt="">
-      <!-- <p class="msg"> Lorem ipsum dolor sit amet, consectetur adipiscing 
-elit, sed do eiusmod tempor incididunt ut labore et 
-dolore magna aliqua.</p> -->
     </div>
 
     <!-- Section 2: Personal Details -->
@@ -49,22 +61,37 @@ dolore magna aliqua.</p> -->
         </div>
 
         <div class="input-area">
-            <label for="name">Contact</label>
+            <label for="contact">Contact</label>
             <input type="number" name="contact" required>
         </div>
-        <div class="input-area">
-            <label for="name">Building Name</label>
-            <input type="text" name="buildingName" required>
-        </div>
-        <div class="input-area">
-            <label for="name">Floor</label>
-            <input type="text" name="floor">
-        </div>
+        
 
-        <div class="input-area">
-            <label for="name">Appartment</label>
-            <input type="text" name="appartment" required>
-        </div>
+<div class="input-area dropdown">
+    <img src="./img/dropdown.png" alt="arrow">
+    <label for="buildingName">Building Name</label>
+    <input type="text" name="buildingName" required id="buildingName" readonly placeholder="Select a Building">
+    <div class="dropdown-content" data-name="building">
+        <?php foreach($buildings as $building):?>
+        <div class="dropdown-item" data-name="building" data-id="<?php echo htmlspecialchars($building['id']); ?>"><?php echo htmlspecialchars($building['building_name']); ?></div>
+        <?php endforeach; ?>
+    </div>
+</div>
+
+<div class="input-area dropdown">
+    <img src="./img/dropdown.png" alt="arrow">
+    <label for="floor">Floor</label>
+    <input type="text" name="floor" required id="floor" readonly placeholder="Select a Floor">
+    <div class="dropdown-content" data-name="floor">
+    </div>
+</div>
+
+<div class="input-area dropdown">
+    <img src="./img/dropdown.png" alt="arrow">
+    <label for="apartment">Apartment</label>
+    <input type="text" name="apartment" required id="apartment" readonly placeholder="Select an Apartment">
+    <div class="dropdown-content" data-name="apartment">
+    </div>
+</div>
         </div>
 
 
@@ -74,9 +101,19 @@ dolore magna aliqua.</p> -->
                 <h4>Report an Issue</h4>
                 <img src="./img/error.png" alt="">
             </div>
-            <div class="input-area">
-                <label for="Category">Category</label>
-                <input type="text" name="category" required>
+            <div class="input-area dropdown">
+                <img src="./img/dropdown.png" alt="arrow" class="registration">
+                <label for="category">Category</label>
+                <input type="text" name="Category" required id="category" readonly placeholder="Please Select">
+                <div class="dropdown-content" data-name="category">
+                    <div class="dropdown-item" data-name="category">Design issue</div>
+                    <div class="dropdown-item" data-name="category">Design Seepage</div>
+                    <div class="dropdown-item" data-name="category">Damp Issue</div>
+                    <div class="dropdown-item" data-name="category">Parking Issue</div>
+                    <div class="dropdown-item" data-name="category">Insaficient Ameneties</div>
+                    <div class="dropdown-item" data-name="category">Registration Process</div>
+                    <div class="dropdown-item" data-name="category">Lack of Maintenance</div>
+                </div>
             </div>
 
             <div class="textarea">
@@ -106,6 +143,7 @@ dolore magna aliqua.</p> -->
 
   </div>
 
+  <script src="./ajax.js"></script>
   <script src="./main.js"></script>
 </body>
 </html>

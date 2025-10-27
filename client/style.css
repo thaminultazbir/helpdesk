@@ -76,7 +76,6 @@ body, html {
     transform: translateY(5px);
   }
 }
-
 .personal-details .input-area,
 .report-issue .input-area{
     display: flex;
@@ -139,6 +138,52 @@ body, html {
     transition: border-bottom 1s ease-in-out;
 }
 
+.input-area.dropdown{
+  position: relative;
+  cursor: pointer;
+}
+.input-area.dropdown input{
+  cursor: pointer;
+}
+
+.input-area.dropdown input:focus,
+.input-area.dropdown input:active{
+  background: transparent;
+}
+.input-area.dropdown img{
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  right:10px;
+  top: 15px;
+
+}
+
+.dropdown-content{
+    display: none;
+    position: absolute;
+    top: 50px; /* Position it below the input */
+    left: 0;
+    width: 90%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    z-index: 1;
+}
+.dropdown-item {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+
+.input-area input:focus + .dropdown-content {
+    display: block;
+}
+
+
 .report-issue .heading{
     display: flex;
     justify-content: space-between;
@@ -148,6 +193,9 @@ body, html {
 .report-issue .heading h4{
     color: #f44336;
 }
+/* .category{
+  padding-right: 20px;
+} */
 .textarea{
     display: flex;
     flex-direction: column;

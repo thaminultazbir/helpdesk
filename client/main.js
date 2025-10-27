@@ -1,3 +1,8 @@
+
+
+
+
+
 //======== Cookie Handle ================
 
 // Function to set cookies
@@ -26,7 +31,7 @@ function populateFormFields() {
     const clientContact = getCookie('client_contact');
     const buildingName = getCookie('client_buildingName');
     const floor = getCookie('client_floor');
-    const appartment = getCookie('client_appartment');
+    const apartment = getCookie('client_apartment');
 
     // Set the values of input fields if the cookies exist
     if (clientName) {
@@ -41,8 +46,8 @@ function populateFormFields() {
     if (floor) {
         document.querySelector('input[name="floor"]').value = floor;
     }
-    if (appartment) {
-        document.querySelector('input[name="appartment"]').value = appartment;
+    if (apartment) {
+        document.querySelector('input[name="apartment"]').value = apartment;
     }
 }
 
@@ -57,14 +62,14 @@ document.querySelector('form').addEventListener('submit', function(event) {
     let contact = document.querySelector('input[name="contact"]').value;
     let buildingName = document.querySelector('input[name="buildingName"]').value;
     let floor = document.querySelector('input[name="floor"]').value;
-    let appartment = document.querySelector('input[name="appartment"]').value;
+    let apartment = document.querySelector('input[name="apartment"]').value;
 
     // Set cookies for personal details
     setCookie('client_name', name, 30);
     setCookie('client_contact', contact, 30);
     setCookie('client_buildingName', buildingName, 30);
     setCookie('client_floor', floor, 30);
-    setCookie('client_appartment', appartment, 30);
+    setCookie('client_apartment', apartment, 30);
 
     // Optionally, submit the form or perform other actions
     this.submit(); // Uncomment this line to actually submit the form after setting cookies
@@ -156,3 +161,141 @@ document.querySelector('form').addEventListener('submit', function(event) {
         document.getElementById('loader').innerHTML = "There was an error submitting your ticket.";
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Get dropdown elements for Building, Floor, Apartment, and Category
+const buildingInputField = document.querySelector('input[name="buildingName"]');
+const floorInputField = document.querySelector('input[name="floor"]');
+const apartmentInputField = document.querySelector('input[name="apartment"]');
+const categoryInputField = document.querySelector('input[name="Category"]');  // Added Category input field
+
+const buildingDropdownContent = document.querySelector('.dropdown-content[data-name="building"]');
+const floorDropdownContent = document.querySelector('.dropdown-content[data-name="floor"]');
+const apartmentDropdownContent = document.querySelector('.dropdown-content[data-name="apartment"]');
+const categoryDropdownContent = document.querySelector('.dropdown-content[data-name="category"]');  // Added Category dropdown content
+
+// Function to close all dropdowns
+function closeAllDropdowns() {
+    buildingDropdownContent.style.display = 'none';
+    floorDropdownContent.style.display = 'none';
+    apartmentDropdownContent.style.display = 'none';
+    categoryDropdownContent.style.display = 'none';  // Close Category dropdown
+}
+
+// Toggle the dropdown for building, close others
+buildingInputField.addEventListener('click', function(event) {
+    if (buildingDropdownContent.style.display === 'block') {
+        buildingDropdownContent.style.display = 'none'; // Close if it's already open
+    } else {
+        closeAllDropdowns(); // Close all dropdowns first
+        buildingDropdownContent.style.display = 'block'; // Open building dropdown
+    }
+    event.stopPropagation(); // Prevent the click from closing the dropdown immediately
+});
+
+// Toggle the dropdown for floor, close others
+floorInputField.addEventListener('click', function(event) {
+    if (floorDropdownContent.style.display === 'block') {
+        floorDropdownContent.style.display = 'none'; // Close if it's already open
+    } else {
+        closeAllDropdowns(); // Close all dropdowns first
+        floorDropdownContent.style.display = 'block'; // Open floor dropdown
+    }
+    event.stopPropagation(); // Prevent the click from closing the dropdown immediately
+});
+
+// Toggle the dropdown for apartment, close others
+apartmentInputField.addEventListener('click', function(event) {
+    if (apartmentDropdownContent.style.display === 'block') {
+        apartmentDropdownContent.style.display = 'none'; // Close if it's already open
+    } else {
+        closeAllDropdowns(); // Close all dropdowns first
+        apartmentDropdownContent.style.display = 'block'; // Open apartment dropdown
+    }
+    event.stopPropagation(); // Prevent the click from closing the dropdown immediately
+});
+
+// Toggle the dropdown for category, close others
+categoryInputField.addEventListener('click', function(event) {
+    if (categoryDropdownContent.style.display === 'block') {
+        categoryDropdownContent.style.display = 'none'; // Close if it's already open
+    } else {
+        closeAllDropdowns(); // Close all dropdowns first
+        categoryDropdownContent.style.display = 'block'; // Open category dropdown
+    }
+    event.stopPropagation(); // Prevent the click from closing the dropdown immediately
+});
+
+// Handle selecting a building, floor, apartment, or category
+document.querySelectorAll('.dropdown-item[data-name="building"]').forEach(item => {
+    item.addEventListener('click', function(event) {
+        buildingInputField.value = item.textContent;
+        buildingDropdownContent.style.display = 'none'; // Close dropdown after selection
+        event.stopPropagation(); // Prevent event bubbling
+    });
+});
+
+document.querySelectorAll('.dropdown-item[data-name="floor"]').forEach(item => {
+    item.addEventListener('click', function(event) {
+        floorInputField.value = item.textContent;
+        floorDropdownContent.style.display = 'none'; // Close dropdown after selection
+        event.stopPropagation(); // Prevent event bubbling
+    });
+});
+
+document.querySelectorAll('.dropdown-item[data-name="apartment"]').forEach(item => {
+    item.addEventListener('click', function(event) {
+        apartmentInputField.value = item.textContent;
+        apartmentDropdownContent.style.display = 'none'; // Close dropdown after selection
+        event.stopPropagation(); // Prevent event bubbling
+    });
+});
+
+document.querySelectorAll('.dropdown-item[data-name="category"]').forEach(item => {
+    item.addEventListener('click', function(event) {
+        categoryInputField.value = item.textContent;
+        categoryDropdownContent.style.display = 'none'; // Close dropdown after selection
+        event.stopPropagation(); // Prevent event bubbling
+    });
+});
+
+// Close all dropdowns if clicking outside
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('.input-area.dropdown')) {
+        closeAllDropdowns(); // Close all dropdowns when clicking outside
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

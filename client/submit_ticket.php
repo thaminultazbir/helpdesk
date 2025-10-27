@@ -8,13 +8,14 @@ $client_contact = $_COOKIE['client_contact']; // Or get from form if needed
 
 // Handle file upload
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $category = $_POST['category'];
-    $details = $_POST['details'];
-
-    // Get the additional form data for project, appartment, and floor
-    $project = $_POST['buildingName'];  // Get project
-    $appartment = $_POST['appartment'];  // Get appartment
-    $floor = isset($_POST['floor']) ? $_POST['floor'] : '';  // Get floor
+    // Get dropdown values (Category, Project, Apartment, Floor)
+    $category = $_POST['Category'];  // Category dropdown
+    $details = $_POST['details'];  // Additional details
+    
+    // Get the additional form data for project (buildingName), apartment, and floor
+    $project = $_POST['buildingName'];  // Building Name dropdown
+    $apartment = $_POST['apartment'];  // Apartment dropdown
+    $floor = isset($_POST['floor']) ? $_POST['floor'] : '';  // Floor dropdown
 
     // Step 1: Insert client details into client_profile table
     $sql_client = "INSERT INTO client_profile (name, phone) VALUES (:client_name, :client_contact)";
@@ -48,11 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $imagePaths[] = $targetFile;
         }
     }
-    
 
     // Step 3: Insert ticket data into tickets table
-    $sql_ticket = "INSERT INTO tickets (client, category, description, image, status, created_at, project, appartment, floor) 
-                   VALUES (:client, :category, :description, :image, :status, :created_at, :project, :appartment, :floor)";
+    $sql_ticket = "INSERT INTO tickets (client, category, description, image, status, created_at, project, apartment, floor) 
+                   VALUES (:client, :category, :description, :image, :status, :created_at, :project, :apartment, :floor)";
 
     $stmt_ticket = $pdo->prepare($sql_ticket);
 
@@ -67,8 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt_ticket->bindParam(':image', $imagePathsStr);  // Bind image paths as comma-separated string
     $stmt_ticket->bindParam(':status', $status);
     $stmt_ticket->bindParam(':created_at', $created_at);
-    $stmt_ticket->bindParam(':project', $project);  // Bind project
-    $stmt_ticket->bindParam(':appartment', $appartment);  // Bind appartment
+    $stmt_ticket->bindParam(':project', $project);  // Bind project (Building Name)
+    $stmt_ticket->bindParam(':apartment', $apartment);  // Bind apartment
     $stmt_ticket->bindParam(':floor', $floor);  // Bind floor
 
     // Execute the ticket insertion
@@ -76,6 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Close the connection (optional with PDO)
     $stmt_ticket->closeCursor();
+
+    // Redirect to success page
     header('Location: ./success.php');
 }
 ?>
