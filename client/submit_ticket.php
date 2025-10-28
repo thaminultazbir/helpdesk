@@ -74,8 +74,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Execute the ticket insertion
     $stmt_ticket->execute();
 
+    $ticket_id = $pdo->lastInsertId();
+    $default_staff_id = 7;
+    $sql_assignment = "INSERT INTO ticket_assignments (ticket_id, staff_id) VALUES (:ticket_id, :staff_id)";
+
+    $stmt_assignment = $pdo->prepare($sql_assignment);
+    $stmt_assignment->bindParam(':ticket_id', $ticket_id);
+    $stmt_assignment->bindParam(':staff_id', $default_staff_id);
+    $stmt_assignment->execute();
+
+
     // Close the connection (optional with PDO)
     $stmt_ticket->closeCursor();
+    $stmt_assignment->closeCursor();
 
     // Redirect to success page
     header('Location: ./success.php');

@@ -110,7 +110,7 @@ include("./includes/sidenav.php");
           </div>
           <?php endif; ?>
 
-          <div><strong class="title">Appartment:</strong><p><?php echo $t['appartment']; ?></p></div>
+          <div><strong class="title">Apartment:</strong><p><?php echo $t['apartment']; ?></p></div>
         </div>
         <div class="issue_details"><strong>Issue Details: </strong><p><?php echo $t['description']; ?></p></div>
         
