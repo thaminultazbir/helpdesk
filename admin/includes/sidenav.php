@@ -25,11 +25,11 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="./building.php">
                         <span class="icon">
                             <ion-icon name="chatbubble-outline"></ion-icon>
                         </span>
-                        <span class="title">Message</span>
+                        <span class="title">Add Building</span>
                     </a>
                 </li>
                 <li>
