@@ -29,7 +29,7 @@
                         <span class="icon">
                             <ion-icon name="chatbubble-outline"></ion-icon>
                         </span>
-                        <span class="title">Add Building</span>
+                        <span class="title">Building</span>
                     </a>
                 </li>
                 <li>
