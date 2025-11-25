@@ -1,8 +1,3 @@
-
-
-
-
-
 //======== Cookie Handle ================
 
 // Function to set cookies
@@ -51,8 +46,54 @@ function populateFormFields() {
     }
 }
 
+// Function to filter and populate the Building Name dropdown (NEW)
+function filterBuildingDropdown(selectedType) {
+    const buildingDropdownContent = document.querySelector('.dropdown-content[data-name="building"]');
+    const buildingInputField = document.querySelector('input[name="buildingName"]');
+    
+    // Clear the current building input value, floor/apartment input, and their dropdown contents
+    buildingInputField.value = '';
+    document.querySelector('input[name="floor"]').value = '';
+    document.querySelector('input[name="apartment"]').value = '';
+    buildingDropdownContent.innerHTML = '';
+    document.querySelector('.dropdown-content[data-name="floor"]').innerHTML = '';
+    document.querySelector('.dropdown-content[data-name="apartment"]').innerHTML = '';
+
+    // allBuildingsData is exposed by PHP in client/index.php
+    if (typeof allBuildingsData === 'undefined') {
+        console.error('allBuildingsData is not defined. Check client/index.php');
+        return;
+    }
+    
+    // Filter buildings based on the selected type
+    const filteredBuildings = allBuildingsData.filter(building => 
+        building.building_type === selectedType
+    );
+    
+    // Populate the Building Name dropdown with filtered results
+    filteredBuildings.forEach(building => {
+        const div = document.createElement('div');
+        div.classList.add('dropdown-item');
+        div.setAttribute('data-name', 'building');
+        // IMPORTANT: The data-id is needed for the logic in ajax.js
+        div.setAttribute('data-id', building.id); 
+        div.textContent = building.building_name;
+        buildingDropdownContent.appendChild(div);
+    });
+
+    // Note: The event listeners for the new building items are handled by delegation in ajax.js
+}
+
 // Populate form fields on page load
-window.onload = populateFormFields;
+window.onload = function() {
+    populateFormFields();
+
+    // Initial population of Building Name dropdown based on the default value ('Residential')
+    const initialType = document.querySelector('input[name="buildingType"]').value || 'Residential';
+    if (typeof filterBuildingDropdown !== 'undefined') {
+         filterBuildingDropdown(initialType);
+    }
+};
 
 // Function to store form data in cookies when the form is submitted
 document.querySelector('form').addEventListener('submit', function(event) {
@@ -72,7 +113,7 @@ document.querySelector('form').addEventListener('submit', function(event) {
     setCookie('client_apartment', apartment, 30);
 
     // Optionally, submit the form or perform other actions
-    this.submit(); // Uncomment this line to actually submit the form after setting cookies
+    // this.submit(); // Uncomment this line to actually submit the form after setting cookies
 });
 
 //======== Intersection Observer (slide-in effect) ================
@@ -120,7 +161,6 @@ document.querySelector('.delete_button').addEventListener('click', function() {
     // Clear the displayed file names
     document.getElementById('fileNames').textContent = 'No files selected';
 });
-
 
 
 // Show loader on form submit and hide it after form submission
@@ -174,12 +214,14 @@ document.querySelector('form').addEventListener('submit', function(event) {
 
 
 
-// Get dropdown elements for Building, Floor, Apartment, and Category
+// Get dropdown elements for Building Type, Building, Floor, Apartment, and Category
+const buildingTypeInputField = document.querySelector('input[name="buildingType"]'); // NEW
 const buildingInputField = document.querySelector('input[name="buildingName"]');
 const floorInputField = document.querySelector('input[name="floor"]');
 const apartmentInputField = document.querySelector('input[name="apartment"]');
 const categoryInputField = document.querySelector('input[name="Category"]');  // Added Category input field
 
+const buildingTypeDropdownContent = document.querySelector('.dropdown-content[data-name="buildingType"]'); // NEW
 const buildingDropdownContent = document.querySelector('.dropdown-content[data-name="building"]');
 const floorDropdownContent = document.querySelector('.dropdown-content[data-name="floor"]');
 const apartmentDropdownContent = document.querySelector('.dropdown-content[data-name="apartment"]');
@@ -187,11 +229,23 @@ const categoryDropdownContent = document.querySelector('.dropdown-content[data-n
 
 // Function to close all dropdowns
 function closeAllDropdowns() {
+    buildingTypeDropdownContent.style.display = 'none'; // NEW
     buildingDropdownContent.style.display = 'none';
     floorDropdownContent.style.display = 'none';
     apartmentDropdownContent.style.display = 'none';
     categoryDropdownContent.style.display = 'none';  // Close Category dropdown
 }
+
+// Toggle the dropdown for building type, close others (NEW)
+buildingTypeInputField.addEventListener('click', function(event) {
+    if (buildingTypeDropdownContent.style.display === 'block') {
+        buildingTypeDropdownContent.style.display = 'none'; // Close if it's already open
+    } else {
+        closeAllDropdowns(); // Close all dropdowns first
+        buildingTypeDropdownContent.style.display = 'block'; // Open building type dropdown
+    }
+    event.stopPropagation(); // Prevent the click from closing the dropdown immediately
+});
 
 // Toggle the dropdown for building, close others
 buildingInputField.addEventListener('click', function(event) {
@@ -237,11 +291,16 @@ categoryInputField.addEventListener('click', function(event) {
     event.stopPropagation(); // Prevent the click from closing the dropdown immediately
 });
 
-// Handle selecting a building, floor, apartment, or category
-document.querySelectorAll('.dropdown-item[data-name="building"]').forEach(item => {
+// Handle selecting a building type (NEW DEPENDENCY LOGIC)
+document.querySelectorAll('.dropdown-item[data-name="buildingType"]').forEach(item => {
     item.addEventListener('click', function(event) {
-        buildingInputField.value = item.textContent;
-        buildingDropdownContent.style.display = 'none'; // Close dropdown after selection
+        const selectedType = item.textContent;
+        buildingTypeInputField.value = selectedType;
+        buildingTypeDropdownContent.style.display = 'none'; // Close dropdown after selection
+        
+        // DEPENDENCY LOGIC: Filter Building Name dropdown
+        filterBuildingDropdown(selectedType);
+        
         event.stopPropagation(); // Prevent event bubbling
     });
 });
@@ -276,26 +335,3 @@ document.addEventListener('click', function(event) {
         closeAllDropdowns(); // Close all dropdowns when clicking outside
     }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

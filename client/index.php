@@ -2,8 +2,8 @@
 // Include database connection
 include('../db.php');
 
-// Fetch building names from the database
-$sql = "SELECT * FROM building_details";
+// Fetch building names and type from the database
+$sql = "SELECT id, building_name, building_type FROM building_details";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $buildings = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch all building names
@@ -12,10 +12,10 @@ $buildings = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch all building names
 $stmt->closeCursor();
 ?>
 
-
-
-
-
+<script>
+    // Make PHP data available to JavaScript for client-side filtering
+    const allBuildingsData = <?= json_encode($buildings) ?>;
+</script>
 
 
 <!DOCTYPE html>
@@ -43,15 +43,13 @@ $stmt->closeCursor();
 </head>
 <body>
   <div class="container">
-    <!-- Section 1: Messages -->
     <div class="messages">
       <p class="query">Welcome to <br> <span>Rancon Facilities
  Support System</span></p>
       <img src="./img/logo.png" alt="">
     </div>
 
-    <!-- Section 2: Personal Details -->
-     <form method="POST" action="submit_ticket.php" enctype="multipart/form-data">
+    <form method="POST" action="submit_ticket.php" enctype="multipart/form-data">
         <div class="personal-details">
         <div class="scroll-logo"><img src="./img/arrow.png" alt=""></div>
         <h4>Your Personal Details</h4>
@@ -65,16 +63,21 @@ $stmt->closeCursor();
             <input type="number" name="contact" required>
         </div>
         
-
+<div class="input-area dropdown">
+    <img src="./img/dropdown.png" alt="arrow">
+    <label for="buildingType">Building Type</label>
+    <input type="text" name="buildingType" required id="buildingType" readonly placeholder="Select Building Type" value="Residential">
+    <div class="dropdown-content" data-name="buildingType">
+        <div class="dropdown-item" data-name="buildingType" data-type="Residential">Residential</div>
+        <div class="dropdown-item" data-name="buildingType" data-type="Commercial">Commercial</div>
+    </div>
+</div>
 <div class="input-area dropdown">
     <img src="./img/dropdown.png" alt="arrow">
     <label for="buildingName">Building Name</label>
     <input type="text" name="buildingName" required id="buildingName" readonly placeholder="Select a Building">
     <div class="dropdown-content" data-name="building">
-        <?php foreach($buildings as $building):?>
-        <div class="dropdown-item" data-name="building" data-id="<?php echo htmlspecialchars($building['id']); ?>"><?php echo htmlspecialchars($building['building_name']); ?></div>
-        <?php endforeach; ?>
-    </div>
+        </div>
 </div>
 
 <div class="input-area dropdown">
@@ -111,9 +114,7 @@ $stmt->closeCursor();
                     <div class="dropdown-item" data-name="category">Parking Arrangement</div>
                     <div class="dropdown-item" data-name="category">Agreement Clarification</div>
                     <div class="dropdown-item" data-name="category">Maintenance Support</div>
-                    <!-- <div class="dropdown-item" data-name="category">Registration Process</div>
-                    <div class="dropdown-item" data-name="category">Lack of Maintenance</div> -->
-                </div>
+                    </div>
             </div>
 
             <div class="textarea">

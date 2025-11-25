@@ -13,7 +13,7 @@ if ($_SESSION['user']['role'] !== 'admin') {
 if (isset($_GET['id'])) {
     $building_id = $_GET['id'];
 
-    // Fetch the building details based on the ID
+    // Fetch the building details based on the ID (select building_type)
     $query = "SELECT * FROM building_details WHERE id = :id";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id', $building_id, PDO::PARAM_INT);
@@ -35,6 +35,7 @@ if (isset($_GET['id'])) {
         $number_of_floor = $_POST['number_of_floor'];
         $number_of_unit = $_POST['number_of_unit'];
         $apartment_name = $_POST['apartment_name'];
+        $building_type = $_POST['building_type']; // <-- NEW LINE
 
         // Sanitize apartment names (same as in add_building.php)
         $apartment_name = preg_replace('/\s*,\s*/', ', ', $apartment_name);
@@ -43,18 +44,20 @@ if (isset($_GET['id'])) {
             return !empty(trim($value)); // filter out empty values
         }));
 
-        // Prepare the update query
+        // Prepare the update query (include building_type)
         $query = "UPDATE building_details SET 
                   building_name = :building_name, 
                   number_of_floor = :number_of_floor, 
                   number_of_unit = :number_of_unit,
-                  apartment_name = :apartment_name 
-                  WHERE id = :id";
+                  apartment_name = :apartment_name,
+                  building_type = :building_type
+                  WHERE id = :id"; // <-- UPDATED QUERY
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':building_name', $building_name, PDO::PARAM_STR);
         $stmt->bindParam(':number_of_floor', $number_of_floor, PDO::PARAM_INT);
         $stmt->bindParam(':number_of_unit', $number_of_unit, PDO::PARAM_INT);
         $stmt->bindParam(':apartment_name', $apartment_name, PDO::PARAM_STR);
+        $stmt->bindParam(':building_type', $building_type, PDO::PARAM_STR); // <-- NEW BINDING
         $stmt->bindParam(':id', $building_id, PDO::PARAM_INT);
 
         // Execute the update statement
@@ -76,7 +79,6 @@ if (isset($_GET['id'])) {
 <?php include("./includes/header.php"); ?>
 <?php include("./includes/sidenav.php"); ?>
 
-<!-- ========Main========== -->
 <div class="main">
     <?php include("./includes/topbar.php"); ?>
     <div class="building_container">
@@ -94,8 +96,14 @@ if (isset($_GET['id'])) {
                         <label for="building_name">Building Name:</label>
                         <input type="text" name="building_name" id="building_name" value="<?php echo htmlspecialchars($building['building_name']); ?>" required>
                     </div>
-
+                    
                     <div class="input_field">
+                        <label for="building_type">Building Type:</label>
+                        <select name="building_type" id="building_type" required>
+                            <option value="Residential" <?php echo (isset($building['building_type']) && $building['building_type'] === 'Residential') ? 'selected' : ''; ?>>Residential</option>
+                            <option value="Commercial" <?php echo (isset($building['building_type']) && $building['building_type'] === 'Commercial') ? 'selected' : ''; ?>>Commercial</option>
+                        </select>
+                    </div> <div class="input_field">
                         <label for="number_of_floor">Number of Floors:</label>
                         <input type="number" name="number_of_floor" id="number_of_floor" value="<?php echo htmlspecialchars($building['number_of_floor']); ?>" required>
                     </div>

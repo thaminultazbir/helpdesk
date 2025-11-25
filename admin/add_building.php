@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $number_of_floor = $_POST['number_of_floor'];
     $number_of_unit = $_POST['number_of_unit'];
     $apartment_name = $_POST['apartment_name'];
+    $building_type = $_POST['building_type']; // <-- NEW LINE
     $apartment_name = preg_replace('/\s*,\s*/', ', ', $apartment_name);
     $apartment_name = trim($apartment_name);
     $apartment_name = implode(", ", array_filter(explode(",", $apartment_name), function($value) {
@@ -22,12 +23,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }));
 
     // Prepare the insert query
-    $query = "INSERT INTO building_details (building_name, number_of_floor, number_of_unit, apartment_name) 
-              VALUES (:building_name, :number_of_floor, :number_of_unit, :apartment_name)";
+    $query = "INSERT INTO building_details (building_name, number_of_floor, number_of_unit, building_type, apartment_name) 
+              VALUES (:building_name, :number_of_floor, :number_of_unit, :building_type, :apartment_name)"; // <-- UPDATED QUERY
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':building_name', $building_name, PDO::PARAM_STR);
     $stmt->bindParam(':number_of_floor', $number_of_floor, PDO::PARAM_INT);
     $stmt->bindParam(':number_of_unit', $number_of_unit, PDO::PARAM_INT);
+    $stmt->bindParam(':building_type', $building_type, PDO::PARAM_STR); // <-- NEW BINDING
     $stmt->bindParam(':apartment_name', $apartment_name, PDO::PARAM_STR);
     
     // Execute the statement
@@ -44,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php include("./includes/header.php"); ?>
 <?php include("./includes/sidenav.php"); ?>
 
-<!-- ========Main========== -->
 <div class="main">
     <?php include("./includes/topbar.php"); ?>
     <div class="building_container">
@@ -62,8 +63,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <label for="building_name">Building Name:</label>
                         <input type="text" name="building_name" id="building_name" required>
                     </div>
-
+                    
                     <div class="input_field">
+                        <label for="building_type">Building Type:</label>
+                        <select name="building_type" id="building_type" required>
+                            <option value="Residential">Residential</option>
+                            <option value="Commercial">Commercial</option>
+                        </select>
+                    </div> <div class="input_field">
                         <label for="number_of_floor">Number of Floors:</label>
                         <input type="number" name="number_of_floor" id="number_of_floor" required>
                     </div>
