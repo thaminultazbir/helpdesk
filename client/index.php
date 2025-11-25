@@ -45,7 +45,7 @@ $stmt->closeCursor();
   <div class="container">
     <!-- Section 1: Messages -->
     <div class="messages">
-      <p class="query">Welcome to <br> <span>Rancon Facility
+      <p class="query">Welcome to <br> <span>Rancon Facilities
  Support System</span></p>
       <img src="./img/logo.png" alt="">
     </div>
@@ -106,13 +106,13 @@ $stmt->closeCursor();
                 <label for="category">Category</label>
                 <input type="text" name="Category" required id="category" readonly placeholder="Please Select">
                 <div class="dropdown-content" data-name="category">
-                    <div class="dropdown-item" data-name="category">Design issue</div>
-                    <div class="dropdown-item" data-name="category">Design Seepage</div>
-                    <div class="dropdown-item" data-name="category">Damp Issue</div>
-                    <div class="dropdown-item" data-name="category">Parking Issue</div>
-                    <div class="dropdown-item" data-name="category">Insaficient Ameneties</div>
-                    <div class="dropdown-item" data-name="category">Registration Process</div>
-                    <div class="dropdown-item" data-name="category">Lack of Maintenance</div>
+                    <div class="dropdown-item" data-name="category">Structural Observation</div>
+                    <div class="dropdown-item" data-name="category">Material Concern</div>
+                    <div class="dropdown-item" data-name="category">Parking Arrangement</div>
+                    <div class="dropdown-item" data-name="category">Agreement Clarification</div>
+                    <div class="dropdown-item" data-name="category">Maintenance Support</div>
+                    <!-- <div class="dropdown-item" data-name="category">Registration Process</div>
+                    <div class="dropdown-item" data-name="category">Lack of Maintenance</div> -->
                 </div>
             </div>
 
