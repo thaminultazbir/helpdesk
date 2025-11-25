@@ -24,7 +24,8 @@ function getCookie(name) {
 function populateFormFields() {
     const clientName = getCookie('client_name');
     const clientContact = getCookie('client_contact');
-    const buildingName = getCookie('client_buildingName');
+    const buildingType = getCookie('client_buildingType'); // <-- NEW
+    const buildingName = getCookie('client_buildingName'); 
     const floor = getCookie('client_floor');
     const apartment = getCookie('client_apartment');
 
@@ -34,6 +35,10 @@ function populateFormFields() {
     }
     if (clientContact) {
         document.querySelector('input[name="contact"]').value = clientContact;
+    }
+    // NEW: Populate Building Type and ensure it's used for the input field value
+    if (buildingType) {
+        document.querySelector('input[name="buildingType"]').value = buildingType;
     }
     if (buildingName) {
         document.querySelector('input[name="buildingName"]').value = buildingName;
@@ -46,7 +51,7 @@ function populateFormFields() {
     }
 }
 
-// Function to filter and populate the Building Name dropdown (NEW)
+// Function to filter and populate the Building Name dropdown (FIXED)
 function filterBuildingDropdown(selectedType) {
     const buildingDropdownContent = document.querySelector('.dropdown-content[data-name="building"]');
     const buildingInputField = document.querySelector('input[name="buildingName"]');
@@ -65,9 +70,10 @@ function filterBuildingDropdown(selectedType) {
         return;
     }
     
-    // Filter buildings based on the selected type
+    // FIX: Trim all comparison strings to avoid whitespace mismatch bugs
+    const trimmedSelectedType = selectedType.trim();
     const filteredBuildings = allBuildingsData.filter(building => 
-        building.building_type === selectedType
+        (building.building_type || '').trim() === trimmedSelectedType
     );
     
     // Populate the Building Name dropdown with filtered results
@@ -80,18 +86,20 @@ function filterBuildingDropdown(selectedType) {
         div.textContent = building.building_name;
         buildingDropdownContent.appendChild(div);
     });
-
-    // Note: The event listeners for the new building items are handled by delegation in ajax.js
 }
 
 // Populate form fields on page load
 window.onload = function() {
     populateFormFields();
 
-    // Initial population of Building Name dropdown based on the default value ('Residential')
-    const initialType = document.querySelector('input[name="buildingType"]').value || 'Residential';
+    // Initial population of Building Name dropdown based on the default or cookie value
+    const buildingTypeInput = document.querySelector('input[name="buildingType"]');
+    // Use the value from the input field (which is either cookie or default 'Residential')
+    const initialType = buildingTypeInput ? buildingTypeInput.value : 'Residential';
+    
     if (typeof filterBuildingDropdown !== 'undefined') {
-         filterBuildingDropdown(initialType);
+         // Trim the initial type before calling the filter function
+         filterBuildingDropdown(initialType.trim());
     }
 };
 
@@ -101,6 +109,7 @@ document.querySelector('form').addEventListener('submit', function(event) {
 
     let name = document.querySelector('input[name="name"]').value;
     let contact = document.querySelector('input[name="contact"]').value;
+    let buildingType = document.querySelector('input[name="buildingType"]').value; // <-- NEW
     let buildingName = document.querySelector('input[name="buildingName"]').value;
     let floor = document.querySelector('input[name="floor"]').value;
     let apartment = document.querySelector('input[name="apartment"]').value;
@@ -108,12 +117,13 @@ document.querySelector('form').addEventListener('submit', function(event) {
     // Set cookies for personal details
     setCookie('client_name', name, 30);
     setCookie('client_contact', contact, 30);
+    setCookie('client_buildingType', buildingType, 30); // <-- NEW COOKIE
     setCookie('client_buildingName', buildingName, 30);
     setCookie('client_floor', floor, 30);
     setCookie('client_apartment', apartment, 30);
 
     // Optionally, submit the form or perform other actions
-    // this.submit(); // Uncomment this line to actually submit the form after setting cookies
+    this.submit(); // Uncomment this line to actually submit the form after setting cookies
 });
 
 //======== Intersection Observer (slide-in effect) ================
@@ -215,13 +225,13 @@ document.querySelector('form').addEventListener('submit', function(event) {
 
 
 // Get dropdown elements for Building Type, Building, Floor, Apartment, and Category
-const buildingTypeInputField = document.querySelector('input[name="buildingType"]'); // NEW
+const buildingTypeInputField = document.querySelector('input[name="buildingType"]');
 const buildingInputField = document.querySelector('input[name="buildingName"]');
 const floorInputField = document.querySelector('input[name="floor"]');
 const apartmentInputField = document.querySelector('input[name="apartment"]');
 const categoryInputField = document.querySelector('input[name="Category"]');  // Added Category input field
 
-const buildingTypeDropdownContent = document.querySelector('.dropdown-content[data-name="buildingType"]'); // NEW
+const buildingTypeDropdownContent = document.querySelector('.dropdown-content[data-name="buildingType"]');
 const buildingDropdownContent = document.querySelector('.dropdown-content[data-name="building"]');
 const floorDropdownContent = document.querySelector('.dropdown-content[data-name="floor"]');
 const apartmentDropdownContent = document.querySelector('.dropdown-content[data-name="apartment"]');
@@ -229,14 +239,14 @@ const categoryDropdownContent = document.querySelector('.dropdown-content[data-n
 
 // Function to close all dropdowns
 function closeAllDropdowns() {
-    buildingTypeDropdownContent.style.display = 'none'; // NEW
+    buildingTypeDropdownContent.style.display = 'none';
     buildingDropdownContent.style.display = 'none';
     floorDropdownContent.style.display = 'none';
     apartmentDropdownContent.style.display = 'none';
     categoryDropdownContent.style.display = 'none';  // Close Category dropdown
 }
 
-// Toggle the dropdown for building type, close others (NEW)
+// Toggle the dropdown for building type, close others
 buildingTypeInputField.addEventListener('click', function(event) {
     if (buildingTypeDropdownContent.style.display === 'block') {
         buildingTypeDropdownContent.style.display = 'none'; // Close if it's already open
@@ -291,19 +301,23 @@ categoryInputField.addEventListener('click', function(event) {
     event.stopPropagation(); // Prevent the click from closing the dropdown immediately
 });
 
-// Handle selecting a building type (NEW DEPENDENCY LOGIC)
+// Handle selecting a building type (NEW DEPENDENCY LOGIC - FIXED)
 document.querySelectorAll('.dropdown-item[data-name="buildingType"]').forEach(item => {
     item.addEventListener('click', function(event) {
-        const selectedType = item.textContent;
+        // FIX: Trim textContent to prevent whitespace issues in input field (Bug 2 Fix)
+        const selectedType = item.textContent.trim(); 
         buildingTypeInputField.value = selectedType;
         buildingTypeDropdownContent.style.display = 'none'; // Close dropdown after selection
         
-        // DEPENDENCY LOGIC: Filter Building Name dropdown
+        // DEPENDENCY LOGIC: Filter Building Name dropdown. selectedType is now already trimmed.
         filterBuildingDropdown(selectedType);
         
         event.stopPropagation(); // Prevent event bubbling
     });
 });
+
+// The logic for handling 'building' dropdown item clicks is intentionally left out here,
+// as it is handled via event delegation in client/ajax.js to support dynamic population.
 
 document.querySelectorAll('.dropdown-item[data-name="floor"]').forEach(item => {
     item.addEventListener('click', function(event) {
